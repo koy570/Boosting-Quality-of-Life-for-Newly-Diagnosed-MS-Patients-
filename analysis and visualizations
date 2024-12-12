@@ -1,0 +1,66 @@
+import json
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load JSON file
+file_path = '/mnt/data/NCT05641532.json'
+with open(file_path, 'r') as file:
+    data = json.load(file)
+
+# Extract relevant sections from the JSON file
+outcomes = data['protocolSection']['outcomesModule']
+primary_outcomes = outcomes['primaryOutcomes']
+secondary_outcomes = outcomes['secondaryOutcomes']
+
+# Create data frames for primary and secondary outcomes
+primary_df = pd.DataFrame(primary_outcomes)
+secondary_df = pd.DataFrame(secondary_outcomes)
+
+# Display primary and secondary outcomes
+print("Primary Outcomes:")
+print(primary_df[['measure', 'description', 'timeFrame']])
+
+print("\nSecondary Outcomes:")
+print(secondary_df[['measure', 'description', 'timeFrame']])
+
+# Simulated Data for Visualization: Physical Activity Levels
+activity_data = {
+    'TimePoint': ['Baseline', 'Post-Intervention'],
+    'StepCount': [5000, 7500]  # Simulated example data
+}
+df_activity = pd.DataFrame(activity_data)
+
+# Visualization: Change in Physical Activity Levels
+plt.figure(figsize=(8, 6))
+sns.barplot(x='TimePoint', y='StepCount', data=df_activity, palette='viridis')
+plt.title('Change in Physical Activity Levels')
+plt.ylabel('Average Step Count')
+plt.show()
+
+# Simulated Data for Fatigue and Quality of Life Improvements
+fatigue_quality_data = {
+    'Measure': ['Fatigue Score', 'Quality of Life Score'],
+    'Baseline': [45, 60],  # Simulated baseline scores
+    'Post-Intervention': [30, 75]  # Simulated post-intervention scores
+}
+df_fq = pd.DataFrame(fatigue_quality_data).set_index('Measure')
+
+# Visualization: Improvements in Fatigue and Quality of Life
+df_fq.plot(kind='bar', figsize=(8, 6))
+plt.title('Fatigue and Quality of Life Improvements')
+plt.ylabel('Scores')
+plt.show()
+
+# Simulated Feasibility Data
+feasibility_data = {
+    'Metric': ['Recruitment Rate', 'Retention Rate', 'Adherence Rate'],
+    'Percentage': [90, 85, 80]  # Simulated percentages
+}
+df_feasibility = pd.DataFrame(feasibility_data)
+
+# Visualization: Feasibility Metrics
+plt.figure(figsize=(8, 6))
+plt.pie(df_feasibility['Percentage'], labels=df_feasibility['Metric'], autopct='%1.1f%%', startangle=140)
+plt.title('Feasibility Metrics')
+plt.show()
